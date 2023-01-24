@@ -60,7 +60,7 @@ class Menu():
 
         self.tile = pygame.Surface((40,40))
         self.tile.fill((238,228,218))
-        font = pygame.font.SysFont(None, 20)
+        font = pygame.font.SysFont(None, 40)
         self.num = font.render('2',True,'black')
 
         
@@ -85,10 +85,10 @@ class Menu():
         self.backdrop.blit(self.tetris_outline,(147,307))
         self.backdrop.blit(self.tetris_button,(150,310))
         screen.blit(self.snake_text,(102,280))
-        screen.blit(self.first_text,(365,299))
-        screen.blit(self.second_text,(393,300))
-        screen.blit(self.third_text,(419,300))
-        screen.blit(self.fourth_text,(445,300))
+        screen.blit(self.first_text,(365,279))
+        screen.blit(self.second_text,(393,280))
+        screen.blit(self.third_text,(419,280))
+        screen.blit(self.fourth_text,(445,280))
         screen.blit(self.st_text,(230,420))
         #print(pygame.mouse.get_pos())
         for index, cube in enumerate(self.blocks):
@@ -96,6 +96,8 @@ class Menu():
         for index, cube in enumerate(self.snake):
             screen.blit(cube,self.s_positions[index])
         screen.blit(self.apple,(210,345))
+        screen.blit(self.tile,(400,325))
+        screen.blit(self.num, (413,333))
         self.check_events()
         
     
@@ -111,7 +113,6 @@ class Menu():
                 self.snake_button.fill((140,140,140))
             if not pygame.mouse.get_pressed()[0] and self.held:
                 start_snake()
-                print('end')
                 self.held = False
         elif self.num_button.get_rect().collidepoint((mouse_pos[0] - 321, mouse_pos[1] - 270)):
             #print(pygame.mouse.get_pressed())

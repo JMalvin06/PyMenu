@@ -1,5 +1,4 @@
 import pygame
-import sys
 from snake import *
 from random import *
 class Game():
@@ -25,6 +24,8 @@ class Game():
             self.grow_snake()
         #    tail = Tail((self.prev_pos[0] - 25, self.prev_pos[1]))
         #    self.tails.add(tail)
+        self.input_list = ['none']
+        self.next_move = self.input_list[0]
 
 
     def grow_snake(self):
@@ -32,6 +33,9 @@ class Game():
         self.tails.add(tail)
 
     def run(self):
+        if self.get_input() != None:
+            if self.input_list[len(self.input_list)-1] != self.get_input():
+                self.input_list.append(self.get_input())
         self.apple.draw(screen)
         self.player.draw(screen)
         self.tails.draw(screen)
@@ -39,7 +43,18 @@ class Game():
         if self.isCollide():
             self.apple.update()
             self.grow_snake()
-        
+
+    def get_input(self):
+        keys = pygame.key.get_pressed()
+        if (keys[pygame.K_w] or keys[pygame.K_UP]) and self.player.sprite.vel.y == 0:
+            return 'up'
+        elif (keys[pygame.K_s] or keys[pygame.K_DOWN]) and self.player.sprite.vel.y == 0:
+            return 'down'
+        elif (keys[pygame.K_a] or keys[pygame.K_LEFT]) and self.player.sprite.vel.x == 0:
+            return 'left'
+        elif (keys[pygame.K_d] or keys[pygame.K_RIGHT]) and self.player.sprite.vel.x == 0:
+            return 'right'
+
                
     def isCollide(self):
         collide = self.apple_sprite.rect.colliderect(self.player.sprite.rect)
@@ -61,10 +76,14 @@ class Game():
                     tail[1].rect.center = pos[1][0] + 12.5 ,pos[1][1] + 12.5
         collision = pygame.sprite.spritecollide(self.player.sprite,self.tails,False)
         if (len(collision) >= 2 or self.player.sprite.rect.x >= 600 or self.player.sprite.rect.x < 0 or self.player.sprite.rect.y >= 600 or self.player.sprite.rect.y < 0) and self.game_start:
-            start_snake()
-        self.player.sprite.fixed_update()
+            reset()
+        if len(self.input_list) > 1:
+            self.input_list.remove(self.input_list[0])
+        self.next_move = self.input_list[0]
+        self.player.sprite.fixed_update(self.next_move)
         if not self.game_start:
             self.game_start = self.player.sprite.vel.x != 0 or self.player.sprite.vel.x != 0
+        
 
 class Apple(pygame.sprite.Sprite):
     def rand_pos(self):
@@ -87,6 +106,7 @@ def reset():
     game = Game()
 
 def start_snake():
+    global game
     pygame.init()
     screen_width, screen_height = 600, 600
     global screen
@@ -105,6 +125,6 @@ def start_snake():
         screen.fill((175,215,70))
         game.run()  
         
-        pygame.display.set_caption("Score: " + str(len(game.tails)))
+        pygame.display.set_caption("Score: " + str(len(game.tails) - 2))
         pygame.display.flip()
         clock.tick(60)

@@ -14,23 +14,38 @@ class Player(pygame.sprite.Sprite):
         
     def player_input(self):
         keys = pygame.key.get_pressed()
-        if (keys[pygame.K_w] or keys[pygame.K_UP]) and self.vel != Vector2(0,self.speed):
+        if (keys[pygame.K_w] or keys[pygame.K_UP]) and self.vel.y == 0:
             self.vel = Vector2(0,-self.speed)
-        if (keys[pygame.K_s] or keys[pygame.K_DOWN]) and self.vel != Vector2(0,-self.speed):
+        elif (keys[pygame.K_s] or keys[pygame.K_DOWN]) and self.vel.y == 0:
             self.vel = Vector2(0,self.speed)
-        if (keys[pygame.K_a] or keys[pygame.K_LEFT]) and self.vel != Vector2(self.speed,0):
+        elif (keys[pygame.K_a] or keys[pygame.K_LEFT]) and self.vel.x == 0:
             self.vel = Vector2(-self.speed,0)
-        if (keys[pygame.K_d] or keys[pygame.K_RIGHT]) and self.vel != Vector2(-self.speed,0):
+        elif (keys[pygame.K_d] or keys[pygame.K_RIGHT]) and self.vel.x == 0:
             self.vel = Vector2(self.speed,0)
+    
+    def get_input(self):
+        if self.direction == 'right':
+            self.vel = Vector2(self.speed,0)
+        elif self.direction == 'left':
+            self.vel = Vector2(-self.speed,0)
+        elif self.direction == 'up':
+            self.vel = Vector2(0,-self.speed)
+        elif self.direction == 'down':
+            self.vel = Vector2(0,self.speed)
+        elif self.direction == 'none':
+            self.vel = Vector2(0,0)
 
     def get_pos(self):
         return (self.rect.x, self.rect.y)
 
     def update(self):
-        self.player_input()
+        pass
+        #self.player_input()
 
 
-    def fixed_update(self):
+    def fixed_update(self,next_move):
+        self.direction = next_move
+        self.get_input()
         self.pos += self.vel
         self.rect.center = self.pos
 

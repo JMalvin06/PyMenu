@@ -60,8 +60,9 @@ class Game():
             self.shape.group.remove(tile)
         for block in self.blocks:
             if block.board_pos[0] == 1 and (block.board_pos[1] <= 3 and block.board_pos[1] <= 6):
-                self.reset()
+                #self.reset()
                 game_end = True
+                return None
         self.shape.group = self.create_shape()
         
     def is_under(self):
@@ -127,7 +128,7 @@ class Game():
         #    print(row)
         #print()
         
-        if self.is_bottom() or self.is_under() and self.shape.screen_ready:
+        if (self.is_bottom() or self.is_under()) and self.shape.screen_ready:
             self.remove_shape()
             self.shape = Shape(self.create_shape())
             for block in self.shape.group:
@@ -209,16 +210,30 @@ class Game():
             self.rotation = 0
         else:
             self.rotation += 1
+        row_positions = []
+        col_positions = []
+        left_dif = 0
+        right_dif = 0
+        up_dif = 0
         for row_index,row in enumerate(SHAPES[self.shape_num][self.rotation]):
             for col_index,col in enumerate(row):
                 if col == 'x':
                     b_count = 0
                     for block in self.shape.group:
                         if b_count == count:
-                            block.board_pos[0] = row_index + min_row
-                            block.board_pos[1] = col_index + min_col
+                            #print(col_index + min_col)
+                            #print(len(self.board[0]))
+                            
+                            if col_index + min_col >= len(self.board[0]):
+                                left_dif = ((col_index + min_col) - len(self.board[0])) + 1
+                                print(left_dif)
+                            row_positions.append(row_index + min_row)
+                            col_positions.append(col_index + min_col)
                         b_count += 1
                     count += 1
+        for index, block in enumerate(self.shape.group):
+            block.board_pos[0] = row_positions[index]
+            block.board_pos[1] = col_positions[index] - left_dif
         #if self.is_left():
 
                     
