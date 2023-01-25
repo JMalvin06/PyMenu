@@ -13,6 +13,14 @@ class Game():
         self.prev_pos = (-25,-25)
         self.last_tail_pos = self.prev_pos
         self.game_start = self.player.sprite.vel.x != 0 or self.player.sprite.vel.x != 0
+        self.background = []
+        for i in range(144):
+            back = pygame.Surface((25,25))
+            back.fill((162,209,73))
+            self.background.append(back)
+
+        #self.background = [pygame.Surface((25,25)) for i in range(144)]
+
         
         self.apple_sprite  = Apple()
         self.apple = pygame.sprite.GroupSingle(self.apple_sprite)
@@ -36,6 +44,10 @@ class Game():
         if self.get_input() != None:
             if self.input_list[len(self.input_list)-1] != self.get_input():
                 self.input_list.append(self.get_input())
+        for row in range(24):
+            for col in range(24):
+                if (col + row) % 2 == 0:
+                    screen.blit(self.background[row + col],(row*25,col * 25))
         self.apple.draw(screen)
         self.player.draw(screen)
         self.tails.draw(screen)
@@ -114,7 +126,7 @@ def start_snake():
     game = Game()
     clock = pygame.time.Clock()
     SCREEN_UPDATE = pygame.USEREVENT + 1
-    pygame.time.set_timer(SCREEN_UPDATE, 200)
+    pygame.time.set_timer(SCREEN_UPDATE, 150)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

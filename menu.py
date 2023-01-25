@@ -102,6 +102,7 @@ class Menu():
         
     
     def check_events(self):
+        global screen
         mouse_pos = pygame.mouse.get_pos()
         #print(mouse_pos)
         if self.snake_button.get_rect().collidepoint((mouse_pos[0] - 81, mouse_pos[1] - 270)):
@@ -114,6 +115,7 @@ class Menu():
             if not pygame.mouse.get_pressed()[0] and self.held:
                 start_snake()
                 self.held = False
+                screen = pygame.display.set_mode((600,700))
         elif self.num_button.get_rect().collidepoint((mouse_pos[0] - 321, mouse_pos[1] - 270)):
             #print(pygame.mouse.get_pressed())
             if pygame.mouse.get_pressed()[0]:
@@ -124,6 +126,7 @@ class Menu():
             if not pygame.mouse.get_pressed()[0] and self.held:
                 start_num() 
                 self.held = False
+                screen = pygame.display.set_mode((600,700))
         elif self.tetris_button.get_rect().collidepoint((mouse_pos[0] - 201, mouse_pos[1] - 412)):
             #print(pygame.mouse.get_pressed())
             if pygame.mouse.get_pressed()[0]:
@@ -134,6 +137,7 @@ class Menu():
             if not pygame.mouse.get_pressed()[0] and self.held:
                 start_tetris() 
                 self.held = False
+                screen = pygame.display.set_mode((600,700))
         else:
             self.held = False
             self.num_button.fill((160,160,160))
@@ -148,9 +152,10 @@ class Menu():
 
 pygame.init()
 menu = Menu()
-screen = pygame.display.set_mode((600,900))
+screen = pygame.display.set_mode((600,700))
 clock = pygame.time.Clock()
 while True:
+    #screen = pygame.display.set_mode((600,700))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()

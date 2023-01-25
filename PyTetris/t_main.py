@@ -213,8 +213,8 @@ class Game():
         row_positions = []
         col_positions = []
         left_dif = 0
-        right_dif = 0
-        up_dif = 0
+        vert_dif = 0
+        hor_block_dif = 0
         for row_index,row in enumerate(SHAPES[self.shape_num][self.rotation]):
             for col_index,col in enumerate(row):
                 if col == 'x':
@@ -226,14 +226,36 @@ class Game():
                             
                             if col_index + min_col >= len(self.board[0]):
                                 left_dif = ((col_index + min_col) - len(self.board[0])) + 1
-                                print(left_dif)
+                            if row_index + min_row >= len(self.board):
+                                vert_dif = ((row_index + min_row) - len(self.board)) + 1
+                            for c_block in self.blocks:
+                                if (col_index + min_col == c_block.board_pos[1] and row_index + min_row == c_block.board_pos[0]) and not c_block.is_shape:
+                                    max_col = 0
+                                    for r in range(len(SHAPES[self.shape_num][self.rotation])):
+                                        for c in range(len(SHAPES[self.shape_num][self.rotation][r])):
+                                            if c > max_col:
+                                                max_col = c
+                                    hor_block_dif = ((max_col + min_col) - c_block.board_pos[1]) + 2
+                                    print(hor_block_dif)
                             row_positions.append(row_index + min_row)
                             col_positions.append(col_index + min_col)
                         b_count += 1
                     count += 1
+        prev_rot = [(block.board_pos[0],block.board_pos[1]) for block in self.shape.group]
+        #print(prev_rot)
         for index, block in enumerate(self.shape.group):
-            block.board_pos[0] = row_positions[index]
-            block.board_pos[1] = col_positions[index] - left_dif
+            block.board_pos[0] = row_positions[index] - vert_dif
+            #print(hor_block_dif)
+            block.board_pos[1] = (col_positions[index] - left_dif) - hor_block_dif
+        for s_block in self.shape.group:
+            for t_block in self.blocks:
+                if((s_block.board_pos[0] == t_block.board_pos[0] and s_block.board_pos[1] == t_block.board_pos[1]) and not t_block.is_shape) or s_block.board_pos[1] < 0:
+                    #print('revert')
+                    self.rotation - 1
+                    for i, n_block in enumerate(self.shape.group):
+                        n_block.board_pos[0] = prev_rot[i][0] 
+                        n_block.board_pos[1] = prev_rot[i][1]
+                    
         #if self.is_left():
 
                     
