@@ -10,13 +10,8 @@ class Menu():
         self.held = False
         self.backdrop = pygame.Surface((500,500))
         self.backdrop.fill((190,190,190))
-        #x = input('Which game would you like to play?\n')
-        #if x.lower() == 'snake':
-        #    start_snake()
-        #elif x == '2048':
-        #    start_num()
-        font = pygame.font.SysFont(None, 100)
-        self.title = font.render('Collection',True,'black')
+        font = pygame.font.SysFont(None, 80)
+        self.title = font.render('3 Games in One',True,'black')
         font = pygame.font.SysFont(None, 50)
         self.caption = font.render('Select a Game:',True,'black')
         #self.backdrop.blit(self.title, (70,10))
@@ -76,7 +71,7 @@ class Menu():
         for index, cube in enumerate(self.blocks):
             screen.blit(cube,self.t_positions[index])
         screen.blit(self.backdrop,(50,100))
-        screen.blit(self.title, (120,110))
+        screen.blit(self.title, (85,120))
         screen.blit(self.caption, (170,180))
         self.backdrop.blit(self.snake_outline,(27,167))
         self.backdrop.blit(self.snake_button,(30,170))

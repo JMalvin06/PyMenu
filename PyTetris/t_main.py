@@ -236,7 +236,7 @@ class Game():
                                             if c > max_col:
                                                 max_col = c
                                     hor_block_dif = ((max_col + min_col) - c_block.board_pos[1]) + 2
-                                    print(hor_block_dif)
+                                    #print(hor_block_dif)
                             row_positions.append(row_index + min_row)
                             col_positions.append(col_index + min_col)
                         b_count += 1
@@ -327,6 +327,7 @@ def start_tetris():
         for event in pygame.event.get():
             if event.type == pygame.QUIT or game_end:
                 game.reset()
+                game.shape.screen_ready = False
                 return None
                 pygame.quit()
                 exit()

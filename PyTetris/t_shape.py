@@ -5,8 +5,8 @@ class Shape():
         self.group = group
         self.screen_ready = False
         self.screen_cooldown = 1000
-        self.screen_time = 1000
-        self.input_ready = True
+        self.screen_time = pygame.time.get_ticks()
+        self.input_ready = False
         self.input_cooldown = 100
         self.input_time = 0
     
